@@ -2106,6 +2106,17 @@ public class Properties {
 				}
 
 				f.set(this, criteria);
+			}else if (f.getType().isAssignableFrom(SecondaryObjective[].class)){
+				String[] values = value.split(":");
+				SecondaryObjective[] secondaryObjectives = new SecondaryObjective[values.length];
+
+				int pos = 0;
+				for (String stringValue : values) {
+					secondaryObjectives[pos++] = Enum.valueOf(SecondaryObjective.class,
+							stringValue.toUpperCase());
+				}
+
+				f.set(this, secondaryObjectives);
 			}
 		} else {
 			f.set(null, value);
