@@ -129,6 +129,11 @@ public class NSGAChromosome extends Chromosome<NSGAChromosome>
 		return 0;
 	}
 
+	@Override
+	public int compareSecondaryObjective(NSGAChromosome o, FitnessFunction objective) {
+		return 0;
+	}
+
 	/**
 	 *  Polynomial Mutation (for real values) - PM
 	 */

@@ -23,6 +23,7 @@ import org.evosuite.Properties;
 import org.evosuite.coverage.mutation.Mutation;
 import org.evosuite.coverage.mutation.MutationExecutionResult;
 import org.evosuite.ga.ConstructionFailedException;
+import org.evosuite.ga.FitnessFunction;
 import org.evosuite.ga.SecondaryObjective;
 import org.evosuite.ga.localsearch.LocalSearchObjective;
 import org.evosuite.ga.operators.mutation.MutationHistory;
@@ -33,6 +34,7 @@ import org.evosuite.symbolic.ConcolicExecution;
 import org.evosuite.symbolic.ConcolicMutation;
 import org.evosuite.testcase.execution.ExecutionResult;
 import org.evosuite.testcase.localsearch.TestCaseLocalSearch;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockCoverage;
 import org.evosuite.testcase.statements.FunctionalMockStatement;
 import org.evosuite.testcase.statements.PrimitiveStatement;
 import org.evosuite.testcase.statements.Statement;
@@ -644,13 +646,44 @@ public final class TestChromosome extends AbstractTestChromosome<TestChromosome>
 		int c = 0;
 
 		while (c == 0 && objective < secondaryObjectives.size()) {
-
 			SecondaryObjective<TestChromosome> so = secondaryObjectives.get(objective++);
 			if (so == null)
 				break;
 			c = so.compareChromosomes(this.self(), o);
 		}
 		return c;
+	}
+
+
+	@Override
+	public  int compareSecondaryObjective(TestChromosome o, FitnessFunction target) {
+		boolean containsBBCSecondaryObjective = false;
+		for(SecondaryObjective so : secondaryObjectives){
+			if(so instanceof BasicBlockCoverage){
+				containsBBCSecondaryObjective = true;
+			}
+		}
+
+		if(!containsBBCSecondaryObjective){
+		 compareSecondaryObjective(o);
+		}
+
+		// Now, we know that BBC is among secondary objectives
+		int objective = 0;
+		int c = 0;
+
+		while (c == 0 && objective < secondaryObjectives.size()) {
+			SecondaryObjective<TestChromosome> so = secondaryObjectives.get(objective++);
+			if (so == null)
+				break;
+			if (so instanceof BasicBlockCoverage){
+				c = ((BasicBlockCoverage) so ).compareChromosomes(this.self(), o,target);
+			}else{
+				c = so.compareChromosomes(this.self(), o);
+			}
+		}
+		return c;
+
 	}
 	/**
 	 * Add an additional secondary objective to the end of the list of

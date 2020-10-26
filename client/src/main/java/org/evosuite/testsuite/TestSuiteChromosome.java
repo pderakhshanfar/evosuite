@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.evosuite.Properties;
 import org.evosuite.ga.ChromosomeFactory;
+import org.evosuite.ga.FitnessFunction;
 import org.evosuite.ga.SecondaryObjective;
 import org.evosuite.ga.localsearch.LocalSearchObjective;
 import org.evosuite.testcase.TestCase;
@@ -195,6 +196,11 @@ public final class TestSuiteChromosome
 			c = so.compareChromosomes(this.self(), o);
 		} 
 		return c;
+	}
+
+	@Override
+	public  int compareSecondaryObjective(TestSuiteChromosome o, FitnessFunction objective) {
+		return this.compareSecondaryObjective(o);
 	}
 
 

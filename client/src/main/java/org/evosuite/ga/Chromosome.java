@@ -291,6 +291,18 @@ public abstract class Chromosome<T extends Chromosome<T>>
 	public abstract int compareSecondaryObjective(T o);
 
 	/**
+	 * Secondary Objectives are specific to chromosome types
+	 * This method only uses if secondary objective is related to fitness function (like when we use Basic Block Coverage secondary objective)
+	 * @param o
+	 *            a {@link org.evosuite.ga.Chromosome} object.
+	 *
+	 * @param o
+	 * 	 *            a {@link org.evosuite.ga.FitnessFunction} objective.
+	 * @return a int.
+	 */
+	public abstract int compareSecondaryObjective(T o, FitnessFunction<T> objective);
+
+	/**
 	 * Apply mutation
 	 */
 	public abstract void mutate();

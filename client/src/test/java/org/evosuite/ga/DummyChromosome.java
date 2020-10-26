@@ -73,6 +73,11 @@ public class DummyChromosome extends Chromosome<DummyChromosome> {
     }
 
     @Override
+    public int compareSecondaryObjective(DummyChromosome o, FitnessFunction objective) {
+        return 0;
+    }
+
+    @Override
     public void mutate() {
         if(values.isEmpty())
             return;
