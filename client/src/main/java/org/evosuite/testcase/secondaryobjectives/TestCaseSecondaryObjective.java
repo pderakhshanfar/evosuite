@@ -22,6 +22,7 @@ package org.evosuite.testcase.secondaryobjectives;
 import org.evosuite.Properties;
 import org.evosuite.ga.SecondaryObjective;
 import org.evosuite.testcase.TestChromosome;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockCoverage;
 
 public class TestCaseSecondaryObjective {
 
@@ -37,6 +38,9 @@ public class TestCaseSecondaryObjective {
             break;
           case EXCEPTIONS:
             secondaryObjectiveInstance = new MinimizeExceptionsSecondaryObjective();
+            break;
+          case BBCOVERAGE:
+            secondaryObjectiveInstance = new BasicBlockCoverage();
             break;
           default:
             throw new RuntimeException("ERROR: asked for unknown secondary objective \""

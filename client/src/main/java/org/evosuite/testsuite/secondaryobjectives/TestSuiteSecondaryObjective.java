@@ -23,6 +23,7 @@ import org.evosuite.Properties;
 import org.evosuite.coverage.ibranch.IBranchSecondaryObjective;
 import org.evosuite.coverage.rho.RhoTestSuiteSecondaryObjective;
 import org.evosuite.ga.SecondaryObjective;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockCoverage;
 import org.evosuite.testsuite.TestSuiteChromosome;
 
 
@@ -54,11 +55,16 @@ public class TestSuiteSecondaryObjective {
         case RHO:
           secondaryObjectiveInstance = new RhoTestSuiteSecondaryObjective();
           break;
+        case BBCOVERAGE:
+          // BBC is a test case secondary objective. So, we dont need to set it here.
+          break;
         default:
           throw new RuntimeException(
               "ERROR: asked for unknown secondary objective \"" + secondaryObjective.name() + "\"");
       }
-      TestSuiteChromosome.addSecondaryObjective(secondaryObjectiveInstance);
+      if(secondaryObjectiveInstance != null){
+        TestSuiteChromosome.addSecondaryObjective(secondaryObjectiveInstance);
+      }
     }
   }
 }
