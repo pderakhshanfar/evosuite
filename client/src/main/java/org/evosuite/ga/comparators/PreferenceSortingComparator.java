@@ -70,7 +70,8 @@ public class PreferenceSortingComparator<T extends Chromosome<T>> implements Com
 		} else if (value1 > value2) {
 			return +1;
 		} else {
-			return solution1.compareSecondaryObjective(solution2);
+			// Since BBC can be helpful in preference sorting, we pass the objective, as well.
+			return solution1.compareSecondaryObjective(solution2,this.objective);
 		}
 	}
 }
