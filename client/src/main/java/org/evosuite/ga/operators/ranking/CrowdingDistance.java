@@ -19,12 +19,15 @@ package org.evosuite.ga.operators.ranking;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.evosuite.Properties;
 import org.evosuite.ga.Chromosome;
 import org.evosuite.ga.FitnessFunction;
 import org.evosuite.ga.comparators.SortByFitness;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockUtility;
 
 /**
  * This class implements different variants of Crowding Distance for many-objective problems
@@ -156,6 +159,13 @@ public class CrowdingDistance<T extends Chromosome<T>> implements Serializable {
 
 			if (max == min)
 				continue;
+
+			// Update minSet if BBC is one of the secondary objectives
+			if (Arrays.asList(Properties.SECONDARY_OBJECTIVE).contains(Properties.SecondaryObjective.BBCOVERAGE) &&
+					BasicBlockUtility.issth() &&
+					isBBCApplicable(ff)){
+
+			}
 			
 			for (T test : minSet){
 				double numer = (front.size() - minSet.size());

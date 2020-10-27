@@ -2,6 +2,7 @@ package org.evosuite.testcase.secondaryobjectives.basicblock;
 
 import org.evosuite.TestGenerationContext;
 import org.evosuite.ga.Chromosome;
+import org.evosuite.ga.FitnessFunction;
 import org.evosuite.graphs.GraphPool;
 import org.evosuite.graphs.cfg.ActualControlFlowGraph;
 import org.evosuite.graphs.cfg.BasicBlock;
@@ -312,4 +313,17 @@ public class BasicBlockUtility {
         semiCoveredBlocks.clear();
         targetBlock=null;
     }
+
+
+    public static boolean isBBCApplicable(FitnessFunction objective){
+        if(objective instanceof org.evosuite.coverage.line.LineCoverageTestFitness ){
+            return true;
+        }else if(objective instanceof  org.evosuite.coverage.branch.BranchCoverageTestFitness){
+            return true;
+        }else if(objective instanceof org.evosuite.coverage.mutation.WeakMutationTestFitness){
+            return true;
+        }
+        return false;
+    }
+
 }

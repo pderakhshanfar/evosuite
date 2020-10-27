@@ -98,7 +98,7 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
             // BBC secondary objective can be helpful here. So, we check if it set as one of the secondary objectives.
             if (Arrays.asList(Properties.SECONDARY_OBJECTIVE).contains(Properties.SecondaryObjective.BBCOVERAGE) &&
                 flag == 0 &&
-                isBBCApplicable(ff)){
+                BasicBlockUtility.isBBCApplicable(ff)){
                 // Here, we can check if BBC can help the comparison or not.
                 BasicBlockCoverage basicBlockCoverage = new BasicBlockCoverage();
                 flag = basicBlockCoverage.compareChromosomes((TestChromosome) c1,(TestChromosome) c2,ff);
@@ -128,17 +128,5 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
         } else {
             return 1; // c2 dominates
         }
-    }
-
-
-    private boolean isBBCApplicable(FitnessFunction objective){
-        if(objective instanceof org.evosuite.coverage.line.LineCoverageTestFitness ){
-            return true;
-        }else if(objective instanceof  org.evosuite.coverage.branch.BranchCoverageTestFitness){
-            return true;
-        }else if(objective instanceof org.evosuite.coverage.mutation.WeakMutationTestFitness){
-            return true;
-        }
-        return false;
     }
 }
