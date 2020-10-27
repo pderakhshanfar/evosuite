@@ -95,13 +95,14 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
         for (FitnessFunction<T> ff : this.objectives) {
             int flag = Double.compare(c1.getFitness(ff), c2.getFitness(ff));
 
-            // BBC secondary objective can be helpful here. So, we check if it set as one of the secondary objectives.
+            if(Properties.BBC_FOR_ALL_FRONTS){// BBC secondary objective can be helpful here. So, we check if it set as one of the secondary objectives.
             if (Arrays.asList(Properties.SECONDARY_OBJECTIVE).contains(Properties.SecondaryObjective.BBCOVERAGE) &&
                 flag == 0 &&
                 BasicBlockUtility.isBBCApplicable(ff)){
                 // Here, we can check if BBC can help the comparison or not.
                 BasicBlockCoverage basicBlockCoverage = new BasicBlockCoverage();
                 flag = basicBlockCoverage.compareChromosomes((TestChromosome) c1,(TestChromosome) c2,ff);
+                }
             }
 
             if (flag < 0) {
