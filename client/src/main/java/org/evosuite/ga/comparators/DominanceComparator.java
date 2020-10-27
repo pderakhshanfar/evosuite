@@ -102,8 +102,6 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
                 // Here, we can check if BBC can help the comparison or not.
                 BasicBlockCoverage basicBlockCoverage = new BasicBlockCoverage();
                 flag = basicBlockCoverage.compareChromosomes((TestChromosome) c1,(TestChromosome) c2,ff);
-                if (flag != 0)
-                    LoggingUtils.getEvoLogger().debug("**> flag changed to "+flag);
             }
 
             if (flag < 0) {

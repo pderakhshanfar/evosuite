@@ -160,13 +160,6 @@ public class CrowdingDistance<T extends Chromosome<T>> implements Serializable {
 			if (max == min)
 				continue;
 
-			// Update minSet if BBC is one of the secondary objectives
-			if (Arrays.asList(Properties.SECONDARY_OBJECTIVE).contains(Properties.SecondaryObjective.BBCOVERAGE) &&
-					BasicBlockUtility.issth() &&
-					isBBCApplicable(ff)){
-
-			}
-			
 			for (T test : minSet){
 				double numer = (front.size() - minSet.size());
 				double demon = front.size();
