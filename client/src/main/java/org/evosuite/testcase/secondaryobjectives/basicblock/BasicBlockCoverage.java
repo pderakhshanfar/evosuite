@@ -2,6 +2,7 @@ package org.evosuite.testcase.secondaryobjectives.basicblock;
 
 import org.evosuite.Properties;
 
+import org.evosuite.coverage.mutation.WeakMutationTestFitness;
 import org.evosuite.ga.FitnessFunction;
 import org.evosuite.ga.SecondaryObjective;
 import org.evosuite.testcase.TestChromosome;
@@ -28,6 +29,14 @@ public class BasicBlockCoverage extends SecondaryObjective<TestChromosome> {
         }
 
         int targetLine = this.getTargetLineNumber(objective);
+
+        // BBC is applicable on weak mutation if and only if the statement is not covered (AL + BD != 0).
+        // Here, we check the coverage of the target line for weak mutation objectives
+        if(objective instanceof WeakMutationTestFitness &&
+                chromosome1.getLastExecutionResult().getTrace().getCoveredLines(targetClass).contains(targetLine)){
+            return 0;
+        }
+
 
         int finalValue;
 
