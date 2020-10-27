@@ -20,11 +20,18 @@
 package org.evosuite.ga.comparators;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.evosuite.Properties;
 import org.evosuite.ga.Chromosome;
 import org.evosuite.ga.FitnessFunction;
+import org.evosuite.testcase.TestChromosome;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockCoverage;
+import org.evosuite.testcase.secondaryobjectives.basicblock.BasicBlockUtility;
+import org.evosuite.utils.LoggingUtils;
 
 /**
  * This class implements a <code>Comparator</code> (a method for comparing <code>Chromosomes</code>
@@ -88,6 +95,17 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
         for (FitnessFunction<T> ff : this.objectives) {
             int flag = Double.compare(c1.getFitness(ff), c2.getFitness(ff));
 
+            // BBC secondary objective can be helpful here. So, we check if it set as one of the secondary objectives.
+            if (Arrays.asList(Properties.SECONDARY_OBJECTIVE).contains(Properties.SecondaryObjective.BBCOVERAGE) &&
+                flag == 0 &&
+                isBBCApplicable(ff)){
+                // Here, we can check if BBC can help the comparison or not.
+                BasicBlockCoverage basicBlockCoverage = new BasicBlockCoverage();
+                flag = basicBlockCoverage.compareChromosomes((TestChromosome) c1,(TestChromosome) c2,ff);
+                if (flag != 0)
+                    LoggingUtils.getEvoLogger().debug("**> flag changed to "+flag);
+            }
+
             if (flag < 0) {
               dominate1 = true;
 
@@ -110,5 +128,17 @@ public class DominanceComparator<T extends Chromosome<T>> implements Comparator<
         } else {
             return 1; // c2 dominates
         }
+    }
+
+
+    private boolean isBBCApplicable(FitnessFunction objective){
+        if(objective instanceof org.evosuite.coverage.line.LineCoverageTestFitness ){
+            return true;
+        }else if(objective instanceof  org.evosuite.coverage.branch.BranchCoverageTestFitness){
+            return true;
+        }else if(objective instanceof org.evosuite.coverage.mutation.WeakMutationTestFitness){
+            return true;
+        }
+        return false;
     }
 }
